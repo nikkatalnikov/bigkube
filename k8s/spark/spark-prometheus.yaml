@@ -1,0 +1,41 @@
+apiVersion: "sparkoperator.k8s.io/v1beta1"
+kind: SparkApplication
+metadata:
+  name: spark-pi
+  namespace: default
+spec:
+  type: Scala
+  mode: cluster
+  image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
+  imagePullPolicy: Always
+  mainClass: producer.SparkRunner
+  mainApplicationFile: "http://192.168.99.1:8080/k8s-spark-kafka-hdfs-assembly-0.1.jar"
+  sparkVersion: "2.4.0"
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 0.1
+    coreLimit: 1000m
+    memory: 1024m
+    labels:
+      version: 2.4.0
+    serviceAccount: default
+    envSecretKeyRefs:
+      DB_PASSWORD:
+        name: mssql-password
+        key: password
+      DB_USER:
+        name: mssql-user
+        key: user
+  executor:
+    cores: 1
+    instances: 1
+    memory: 1024m
+    labels:
+      version: 2.4.0
+  monitoring:
+    exposeDriverMetrics: true
+    exposeExecutorMetrics: true
+    prometheus:
+      jmxExporterJar: "/prometheus/jmx_prometheus_javaagent-0.3.1.jar"
+      port: 8090

@@ -1,0 +1,5 @@
+package producer
+
+object Producer {
+
+}
