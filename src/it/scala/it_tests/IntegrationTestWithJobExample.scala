@@ -3,43 +3,47 @@ package it_tests
 import com.typesafe.config.ConfigFactory
 import org.scalatest._
 import com.microsoft.sqlserver.jdbc.SQLServerException
-
 import it_tests.utils._
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
 
 class IntegrationTestWithJobExample extends FunSuite with BeforeAndAfterAll with Matchers {
+  private val sparkConf = new SparkConf().setAppName("mssql-it").setMaster("local")
+  lazy val spark: SparkSession = SparkSession
+    .builder()
+    .config(sparkConf)
+    .getOrCreate()
 
   private val config = ConfigFactory.load("it.conf")
   private val JDBCSqlConnStr = config.getString("sqlserver.db.url")
   private val JDBCDriver = config.getString("sqlserver.driver")
   private val DBTestDeployment = config.getString("deployment.it.mssql")
   private val SparkAppDeployment = config.getString("deployment.it.sparkOperator")
-  private val SparkTestURL = config.getString("deployment.it.localSparkConf")
+  private val k8sUrl = config.getString("deployment.it.k8sUrl")
 
-  val appController = new AppController("mssql-it", "default", DBTestDeployment)
+  val appController = new AppController( "default", DBTestDeployment)
   val sparkController = new SparkController(
-    "MSSQL-poller-it",
     "default",
-    this.getClass.getName,
     SparkAppDeployment,
-    SparkTestURL
+    k8sUrl
   )
 
   override def beforeAll(): Unit = {
     try {
       appController.launchTestDeployment()
     } catch {
-      case _ => appController.cleanUpTestDeployment()
+      case _: Throwable => appController.cleanUpTestDeployment()
     }
 
     try {
       sparkController.launchSparkTestDeployment()
     } catch {
-      case _ => sparkController.cleanUpSparkTestDeployment()
+      case _: Throwable => sparkController.cleanUpSparkTestDeployment()
     }
   }
 
 //  test("Queries existing tables from seeded MSSQL instance") {
-//    val countriesDF = sparkController.spark.read
+//    val countriesDF = spark.read
 //      .format("JDBC")
 //      .options(
 //        Map(
@@ -50,7 +54,7 @@ class IntegrationTestWithJobExample extends FunSuite with BeforeAndAfterAll with
 //      )
 //      .load()
 //
-//    val transactionsDF  = sparkController.spark.read
+//    val transactionsDF  = spark.read
 //      .format("JDBC")
 //      .options(
 //        Map(
@@ -65,7 +69,7 @@ class IntegrationTestWithJobExample extends FunSuite with BeforeAndAfterAll with
 //  }
 
   test("Throws exception if wrong table name provided") {
-    val nonExistingTableDF  = sparkController.spark.read
+    val nonExistingTableDF  = spark.read
       .format("JDBC")
       .options(
         Map(
@@ -80,7 +84,7 @@ class IntegrationTestWithJobExample extends FunSuite with BeforeAndAfterAll with
   }
 
   override def afterAll(): Unit = {
-    sparkController.shutDownSpark()
+    spark.stop()
     sparkController.cleanUpSparkTestDeployment()
     appController.cleanUpTestDeployment()
   }

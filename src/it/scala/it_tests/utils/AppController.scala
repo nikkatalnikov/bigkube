@@ -7,7 +7,7 @@ import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 import scala.concurrent.duration._
 
-class AppController(appName: String, ns: String, resourceName: String) {
+class AppController(ns: String, resourceName: String) {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   def launchTestDeployment(): Unit = {

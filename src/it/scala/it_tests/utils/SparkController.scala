@@ -1,7 +1,5 @@
 package it_tests.utils
 
-import org.apache.spark.SparkConf
-import org.apache.spark.sql.SparkSession
 import org.json.JSONObject
 import org.yaml.snakeyaml.Yaml
 import java.io.{File, FileInputStream}
@@ -20,14 +18,8 @@ import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 import scala.concurrent.duration._
 
-class SparkController(appName: String, crdNamespace: String, mainClass: String, resourceName: String, sparkTestURL: String) {
+class SparkController(crdNamespace: String, resourceName: String, k8sUrl: String) {
   import scala.concurrent.ExecutionContext.Implicits.global
-
-  private val sparkConf = new SparkConf().setAppName(appName).setMaster("local")
-  val spark: SparkSession = SparkSession
-    .builder()
-    .config(sparkConf)
-    .getOrCreate()
 
   private val crdGroup = "sparkoperator.k8s.io"
   private val crdVersion = "v1beta1"
@@ -124,10 +116,6 @@ class SparkController(appName: String, crdNamespace: String, mainClass: String, 
     }
 
     Await.result(apiCall, Duration.Inf)
-  }
-
-  def shutDownSpark(): Unit = {
-    spark.stop()
   }
 
   private def convertYamlToJson(resourceName: String): JSONObject = {
