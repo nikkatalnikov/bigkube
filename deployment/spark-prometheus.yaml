@@ -8,7 +8,7 @@ spec:
   mode: cluster
   image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
   imagePullPolicy: Always
-  mainClass: producer.SparkRunner
+  mainClass: consumer.KafkaConsumer
   mainApplicationFile: "http://192.168.99.1:8080/k8s-spark-kafka-hdfs-assembly-0.1.jar"
   sparkVersion: "2.4.0"
   restartPolicy:
