@@ -1,0 +1,54 @@
+{
+  "value_schema":
+  {
+    "type":"record",
+    "name":"msg",
+    "namespace":"test",
+    "fields":[
+      {
+        "name":"text",
+        "type":"string"
+      },
+      {
+        "name":"description",
+        "type":"string"
+      },
+      {
+        "title":"title",
+        "type":"string"
+      },
+      {
+        "name":"timestamp",
+        "type":"long"
+      },
+      {
+        "name":"user",
+        "type":"record",
+        "fields":[
+          {
+            "name":"id",
+            "type":"int"
+          },
+          {
+            "name":"name",
+            "type":"string"
+          },
+          {
+            "name":"location",
+            "type":"string"
+          }
+        ]
+      }
+    ]
+  },
+  "records": [{
+    "text": "hi there",
+    "description": "greeting",
+    "title": "Hey!",
+    "user": {
+      "name": "Nik",
+      "id": 123456789,
+      "location": "Kiev"
+    }
+  }]
+}

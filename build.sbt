@@ -10,19 +10,13 @@ lazy val root = Project(id = "root", base = file("."))
   .configs(IntegrationTest)
   .settings(Defaults.itSettings: _*)
 
-//lazy val itJob = project
-//  .settings(Defaults.itSettings: _*)
-//  .settings(
-//    mainClass in assembly := Some("it_tests.IntegrationTestWithJobExample"),
-//    assemblyJarName in assembly := "it.jar"
-//  )
-
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % Test,
   "org.apache.spark" %% "spark-sql" % sparkVersion % Test,
 
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
 
   "io.reactivex" %% "rxscala" % "0.26.5",
 
@@ -43,9 +37,10 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
 
-  //"org.apache.spark" %% "spark-streaming" % sparkVersion,
-  //"org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
-  //"org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion,
+  "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.0",
+  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.3",
+
+  "com.github.azakordonets" % "fabricator_2.12" % "2.1.5" % Test
 )
 
 assemblyMergeStrategy in assembly := {
