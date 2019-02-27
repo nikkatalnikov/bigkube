@@ -2,17 +2,17 @@ package consumer
 
 import java.io.ByteArrayOutputStream
 import com.sksamuel.avro4s._
-import scala.util.Try
+import com.typesafe.scalalogging.LazyLogging
 
 case class User(id: Int, name: String, location: String)
 case class Msg(text: String, description: String, title: String, timestamp: Long, user: User)
 
-object AvroHelper {
-  private val schema = AvroSchema[User]
+object AvroHelper extends LazyLogging {
+  private val schema = AvroSchema[Msg]
 
-  def deserializeMsg(raw: Array[Byte]): List[Try[Msg]] = {
+  def deserializeMsg(raw: Array[Byte]): List[Msg] = {
     val stream = AvroInputStream.data[Msg].from(raw).build(schema)
-    val result = stream.tryIterator.toList
+    val result = stream.iterator.toList
 
     stream.close()
     result

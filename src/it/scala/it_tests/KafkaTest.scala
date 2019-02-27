@@ -3,7 +3,7 @@ package it_tests
 import it_tests.utils._
 import com.typesafe.config.ConfigFactory
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
-import org.apache.kafka.common.serialization.StringSerializer
+import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 
 import scala.util.{Failure, Success}
@@ -14,11 +14,11 @@ import scala.concurrent.{Await, Future}
 class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
   import scala.concurrent.ExecutionContext.Implicits.global
 
-  private val config = ConfigFactory.load()
-  private val localKafkaUrl = config.getString("minikube.kafka.url")
+  private val config = ConfigFactory.load("it")
+  private val localKafkaUrl = config.getString("kafka.url")
 
   private val topics = config
-    .getStringList("minikube.kafka.topics")
+    .getStringList("kafka.topics")
     .asScala
     .toSet
 
@@ -26,13 +26,13 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
 
   val sparkController = new SparkController(
     "default",
-    SparkAppDeployment,
+    SparkAppDeployment
   )
 
   private val kafkaParams = Map[String, Object](
     "bootstrap.servers" -> localKafkaUrl,
     "key.serializer" -> classOf[StringSerializer],
-    "value.serializer" -> classOf[StringSerializer]
+    "value.serializer" -> classOf[ByteArraySerializer]
   )
 
   val producer = new KafkaProducer[String, Array[Byte]](kafkaParams.asJava)
