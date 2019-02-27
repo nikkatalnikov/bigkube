@@ -85,11 +85,13 @@ spec:
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: zookeeper-headless:2181
             - name: MINIKUBE_IP
-              value: 192.168.64.2
+              value: 192.168.64.3
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: PLAINTEXT://kafka-broker-0.kafka-headless.default.svc.cluster.local:9092,EXTERNAL://192.168.99.100:9093
+              value: PLAINTEXT://kafka-broker-0.kafka-headless.default.svc.cluster.local:9092,EXTERNAL://192.168.64.3:9093
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
           ports:
             - containerPort: 9092
               name: internal
