@@ -1,6 +1,6 @@
 name := "k8s-spark-kafka-hdfs"
 version := "0.1"
-scalaVersion := "2.12.8"
+scalaVersion := "2.11.12"
 
 val sparkVersion = "2.4.0"
 val circeVersion = "0.11.0"
@@ -11,9 +11,6 @@ lazy val root = Project(id = "root", base = file("."))
   .settings(Defaults.itSettings: _*)
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % sparkVersion % Test,
-  "org.apache.spark" %% "spark-sql" % sparkVersion % Test,
-
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
@@ -25,7 +22,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "3.3.0" % Test,
   "com.typesafe.slick" %% "slick-hikaricp" % "3.3.0" % Test,
 
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
   "com.typesafe" % "config" % "1.0.2",
   "io.kubernetes" % "client-java" % "4.0.0",
   "org.json" % "json" % "20180813",
@@ -40,14 +37,16 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
 
-  "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.0",
-  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.3",
+  "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
+  
+  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.2",
 
-  "com.github.azakordonets" % "fabricator_2.12" % "2.1.5" % Test
+  "com.github.azakordonets" % "fabricator_2.11" % "2.1.5" % Test
 )
 
 assemblyMergeStrategy in assembly := {
   case PathList("application.conf") => MergeStrategy.concat
+  case PathList("org", "apache", "spark", "unused", "UnusedStubClass.class") => MergeStrategy.first
   case PathList("org", "apache", "commons", "beanutils", _*) => MergeStrategy.first
   case PathList("org", "apache", "commons", "collections", _*) => MergeStrategy.first
   case PathList("io", "sundr", _*) => MergeStrategy.first
