@@ -8,7 +8,8 @@ import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
 
 import scala.util.{Failure, Success}
 import scala.collection.JavaConverters._
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,13 +22,11 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
     .asScala
     .toSet
 
-  private val SparkAppDeployment = config.getString("deployment.it.sparkOperator")
-  private val k8sUrl = config.getString("deployment.it.k8sUrl")
+  private val SparkAppDeployment = config.getString("spark.crd")
 
   val sparkController = new SparkController(
     "default",
     SparkAppDeployment,
-    k8sUrl
   )
 
   private val kafkaParams = Map[String, Object](
@@ -54,6 +53,8 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
       case Success(v) => v
       case Failure(e) => throw new RuntimeException(s"Producer error $e")
     }
+
+    Await.result(seqF, Duration.Inf)
 
     producer.close()
 

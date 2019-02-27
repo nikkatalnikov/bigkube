@@ -18,7 +18,7 @@ import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 import scala.concurrent.duration._
 
-class SparkController(crdNamespace: String, resourceName: String, k8sUrl: String) {
+class SparkController(crdNamespace: String, resourceName: String) {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   private val crdGroup = "sparkoperator.k8s.io"
