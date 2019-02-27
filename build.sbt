@@ -22,8 +22,10 @@ libraryDependencies ++= Seq(
 
   "com.microsoft.sqlserver" % "mssql-jdbc" % "7.2.0.jre8",
   "com.facebook.presto" % "presto-jdbc" % "0.151" % Test,
+  "com.typesafe.slick" %% "slick" % "3.3.0" % Test,
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.0" % Test,
 
-"com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   "com.typesafe" % "config" % "1.0.2",
   "io.kubernetes" % "client-java" % "4.0.0",
   "org.json" % "json" % "20180813",

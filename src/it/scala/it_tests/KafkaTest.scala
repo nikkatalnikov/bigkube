@@ -38,8 +38,16 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
   val producer = new KafkaProducer[String, Array[Byte]](kafkaParams.asJava)
 
   override def beforeAll(): Unit = {
-    val records = FakeMsgGenerator.generateNFakeMsgs(100)
+    try {
+      sparkController.launchSparkTestDeployment()
+    } catch {
+      case _: Throwable => sparkController.cleanUpSparkTestDeployment()
+    }
+  }
 
+  test("it reads data from Kafka topics and stores it to hdfs") {
+    val recordsNumber = 100
+    val records = FakeMsgGenerator.generateNFakeMsgs(recordsNumber)
     val fs = topics
       .map(t => (t, consumer.AvroHelper.serializeMsg(records)))
       .map {
@@ -55,14 +63,18 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
     }
 
     Await.result(seqF, Duration.Inf)
-
     producer.close()
 
-    try {
-      sparkController.launchSparkTestDeployment()
-    } catch {
-      case _: Throwable => sparkController.cleanUpSparkTestDeployment()
+    import PrestoService.dbConfig.profile.api._
+    lazy val verifyQ = sqlu"""select count(*) from test"""
+    val qF = PrestoService.db.run(verifyQ)
+
+    qF onComplete {
+      case Success(v) => assert(v == recordsNumber)
+      case Failure(e) => throw new RuntimeException(s"Presto query error $e")
     }
+
+    Await.result(qF, Duration.Inf)
   }
 
   override def afterAll(): Unit = {
