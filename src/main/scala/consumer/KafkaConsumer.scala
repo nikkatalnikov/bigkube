@@ -50,14 +50,17 @@ object KafkaConsumer extends LazyLogging {
     import spark.implicits._
 
     stream
-      .map(record => (record.key, record.value))
-      .foreachRDD((rdd, _) => {
-        val parsed = rdd.map { case (_, v) => deserializeMsg(v) }
-
-        parsed
-          .collect
-          .foreach(_.toDF.show(10))
+      .map(record => record.value)
+      .map(rdd => {
+        deserializeMsg(rdd)
       })
+      .foreachRDD(x => x
+        .toDF
+        .write
+        .mode(SaveMode.Append)
+        .format("parquet")
+        .saveAsTable("test")
+      )
 
     ssc.start()
     ssc.awaitTermination()
