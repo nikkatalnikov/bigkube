@@ -14,13 +14,14 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-hive" % sparkVersion % "provided",
 
   "io.reactivex" %% "rxscala" % "0.26.5",
 
-  "com.microsoft.sqlserver" % "mssql-jdbc" % "7.2.0.jre8",
   "com.facebook.presto" % "presto-jdbc" % "0.151" % Test,
-  "com.typesafe.slick" %% "slick" % "3.3.0" % Test,
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.0" % Test,
+  //  "com.microsoft.sqlserver" % "mssql-jdbc" % "7.2.0.jre8",
+  //  "com.typesafe.slick" %% "slick" % "3.3.0" % Test,
+  //  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.0" % Test,
 
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
   "com.typesafe" % "config" % "1.0.2",
