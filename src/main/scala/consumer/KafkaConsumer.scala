@@ -5,7 +5,7 @@ import org.apache.spark.sql._
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.kafka010._
-import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferBrokers
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
 
@@ -33,19 +33,19 @@ object KafkaConsumer extends LazyLogging {
     "enable.auto.commit" -> (false: java.lang.Boolean)
   )
 
+  val sparkConf: SparkConf = new SparkConf().setAppName("KafkaAvroToHDFSWriter")
+  val spark: SparkSession = SparkSession
+    .builder()
+    .config(sparkConf)
+    .enableHiveSupport()
+    .getOrCreate()
+
+  val ssc = new StreamingContext(spark.sparkContext, Seconds(5))
+
   def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("KafkaAvroToHDFSWriter")
-    val spark: SparkSession = SparkSession
-      .builder()
-      .config(sparkConf)
-      .enableHiveSupport()
-      .getOrCreate()
-
-    val ssc = new StreamingContext(spark.sparkContext, Seconds(5))
-
     val stream = KafkaUtils.createDirectStream[String, Array[Byte]](
       ssc,
-      PreferConsistent,
+      PreferBrokers,
       Subscribe[String, Array[Byte]](topics, kafkaParams)
     )
 
