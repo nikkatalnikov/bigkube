@@ -42,7 +42,9 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
 
     val records = FakeMsgGenerator.generateNFakeMsgs(100)
     topics
-      .map(t => (t, consumer.AvroHelper.serializeMsg(records)))
+      .flatMap(t => records
+        .map(r => (t, consumer.AvroHelper.serializeMsg(r)))
+      )
       .map {
         case (t, array) => new ProducerRecord[String, Array[Byte]](t, array)
       }

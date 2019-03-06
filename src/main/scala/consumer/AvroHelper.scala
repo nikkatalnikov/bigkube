@@ -10,15 +10,15 @@ case class Msg(text: String, description: String, title: String, timestamp: Long
 object AvroHelper extends LazyLogging {
   private val schema = AvroSchema[Msg]
 
-  def deserializeMsg(raw: Array[Byte]): List[Msg] = {
+  def deserializeMsg(raw: Array[Byte]): Msg = {
     val stream = AvroInputStream.data[Msg].from(raw).build(schema)
-    val result = stream.iterator.toList
+    val result = stream.iterator.toStream.head
 
     stream.close()
     result
   }
 
-  def serializeMsg(seq: Seq[Msg]): Array[Byte] = {
+  def serializeMsg(seq: Msg): Array[Byte] = {
     val baos = new ByteArrayOutputStream()
     val stream = AvroOutputStream.data[Msg].to(baos).build(schema)
 

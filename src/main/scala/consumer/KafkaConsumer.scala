@@ -52,20 +52,21 @@ object KafkaConsumer extends LazyLogging {
     import spark.implicits._
 
     stream
-      .map(record => record.value)
-      .flatMap(rdd => {
-        deserializeMsg(rdd)
-      })
-      .foreachRDD(x => {
-        if (!x.isEmpty) {
-          x.toDF
+      .foreachRDD(rdd => {
+        val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+
+        if (!rdd.isEmpty) {
+          rdd
+            .map(x => deserializeMsg(x.value))
+            .toDF
             .write
             .mode(SaveMode.Append)
             .format("parquet")
             .saveAsTable(tableName)
           }
-        }
-      )
+
+        stream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)
+      })
 
     ssc.start()
     ssc.awaitTermination()
