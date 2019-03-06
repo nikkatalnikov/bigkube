@@ -18,6 +18,7 @@ object KafkaConsumer extends LazyLogging {
   private val config = ConfigFactory.load()
   private val localKafkaUrl = config.getString("minikube.kafka.url")
   private val groupId = config.getString("minikube.kafka.groupId")
+  private val tableName = config.getString("minikube.hive.tableName")
   private val topics = config
     .getStringList("minikube.kafka.topics")
     .asScala
@@ -37,9 +38,10 @@ object KafkaConsumer extends LazyLogging {
     val spark: SparkSession = SparkSession
       .builder()
       .config(sparkConf)
+      .enableHiveSupport()
       .getOrCreate()
 
-    val ssc = new StreamingContext(spark.sparkContext, Seconds(2))
+    val ssc = new StreamingContext(spark.sparkContext, Seconds(5))
 
     val stream = KafkaUtils.createDirectStream[String, Array[Byte]](
       ssc,
