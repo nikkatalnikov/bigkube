@@ -10,8 +10,8 @@ object FakeMsgGenerator {
       .map(_ => {
         val text = Words().sentence
         val desc = Words().sentence
-        val title = Words().paragraph
-        val ts = fabricator.Alphanumeric().randomLong
+        val title = Words().word.toUpperCase
+        val ts = System.currentTimeMillis
         val userId = fabricator.Alphanumeric().randomInt
         val name = Contact().firstName
         val address = Contact().address
