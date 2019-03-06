@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: namenode
+spec:
+  type: NodePort
+  ports:
+    - name: client
+      port: 8020
+    - name: hdfs
+      port: 50070
+      nodePort: 30070
+  selector:
+    hdfs: namenode
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: namenode
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        hdfs: namenode
+    spec:
+      containers:
+        - env:
+            - name: CLUSTER_NAME
+              value: test
+          image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
+          name: namenode
+          envFrom:
+            - configMapRef:
+                name: hive-env
+          ports:
+            - containerPort: 50070
+            - containerPort: 8020
+          volumeMounts:
+            - mountPath: /hadoop/dfs/name
+              name: namenode
+      volumes:
+        - name: namenode
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datanode
+spec:
+  ports:
+    - name: hdfs
+      port: 50075
+      targetPort: 50075
+  selector:
+    hdfs: datanode
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: datanode
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        hdfs: datanode
+    spec:
+      containers:
+        - env:
+            - name: SERVICE_PRECONDITION
+              value: namenode:50070
+          image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+          envFrom:
+            - configMapRef:
+                name: hive-env
+          name: datanode
+          ports:
+            - containerPort: 50075
+          volumeMounts:
+            - mountPath: /hadoop/dfs/data
+              name: datanode
+      volumes:
+        - name: datanode
+          emptyDir: {}

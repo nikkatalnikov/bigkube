@@ -42,7 +42,7 @@ case class Status(applicationState: ApplicationState,
                   terminationTime: Option[String],
                   sparkApplicationId: Option[String],
                   executionAttempts: Option[Int],
-                  driverInfo: DriverInfo,
+                  driverInfo: DriverInfo
                  )
 
 case class DriverInfo(podName: Option[String],
