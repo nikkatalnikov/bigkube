@@ -9,10 +9,17 @@ spec:
   image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
   imagePullPolicy: Always
   mainClass: consumer.KafkaConsumer
-  mainApplicationFile: "http://192.168.99.1:8080/k8s-spark-kafka-hdfs-assembly-0.1.jar"
+  mainApplicationFile: "http://192.168.1.10:8080/k8s-spark-kafka-hdfs-assembly-0.1.jar"
   sparkVersion: "2.4.0"
   restartPolicy:
     type: Never
+  hadoopConf:
+    "fs.defaultFS": "hdfs://namenode:8020"
+    "javax.jdo.option.ConnectionURL": "jdbc:postgresql://postgresql/metastore"
+    "javax.jdo.option.ConnectionDriverName": "org.postgresql.Driver"
+    "javax.jdo.option.ConnectionUserName": "hive"
+    "javax.jdo.option.ConnectionPassword": "hive"
+    "hive.metastore.uris": "thrift://hive-metastore:9083"
   driver:
     cores: 0.1
     coreLimit: 1000m
