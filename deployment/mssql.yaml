@@ -19,7 +19,7 @@ kind: StatefulSet
 metadata:
   name: mssql
   labels:
-    app: c
+    app: mssql
 spec:
   selector:
     matchLabels:

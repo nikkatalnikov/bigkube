@@ -25,7 +25,6 @@ spec:
       containers:
         - name: presto
           image: mozdata/docker-presto:0.151
-          imagePullPolicy: Always
           env:
             - name: CONFIG_CONF_QUERY_MAX___MEMORY
               value: 128MB
