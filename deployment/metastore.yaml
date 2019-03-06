@@ -22,14 +22,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: postgres:9.5
-          env:
-            - name: POSTGRES_USER
-              value: hive
-            - name: POSTGRES_PASSWORD
-              value: password
-            - name: POSTGRES_DB
-              value: metastore
+          image: bde2020/hive-metastore-postgresql:2.3.0
           ports:
             - containerPort: 5432
 ---
@@ -56,17 +49,17 @@ spec:
         app: hive-metastore
     spec:
       containers:
-        - name: hive-metastore
-          image: mozdata/docker-hive-metastore:2.1.0
-          imagePullPolicy: Always
+        - args:
+            - /opt/hive/bin/hive
+            - --service
+            - metastore
+          envFrom:
+            - configMapRef:
+                name: hive-env
           env:
-            - name: DB_URI
-              value: postgresql
-            - name: DB_USER
-              value: hive
-            - name: DB_PASSWORD
-              value: password
-            - name: CORE_CONF_fs_defaultFS
-              value: hdfs://hdfs-namenode:8020
+            - name: SERVICE_PRECONDITION
+              value: namenode:50070 datanode:50075 postgresql:5432
+          image: bde2020/hive:2.3.2-postgresql-metastore
+          name: hive-metastore
           ports:
             - containerPort: 9083
