@@ -53,15 +53,18 @@ object KafkaConsumer extends LazyLogging {
 
     stream
       .map(record => record.value)
-      .map(rdd => {
+      .flatMap(rdd => {
         deserializeMsg(rdd)
       })
-      .foreachRDD(x => x
-        .toDF
-        .write
-        .mode(SaveMode.Append)
-        .format("parquet")
-        .saveAsTable("test")
+      .foreachRDD(x => {
+        if (!x.isEmpty) {
+          x.toDF
+            .write
+            .mode(SaveMode.Append)
+            .format("parquet")
+            .saveAsTable(tableName)
+          }
+        }
       )
 
     ssc.start()
