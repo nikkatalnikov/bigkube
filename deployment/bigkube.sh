@@ -28,12 +28,12 @@ function drop_spark_operator() {
 function create() {
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
-    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
+#    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
     kubectl create -f mssql.yaml && wait
     kubectl create -f kafka.yaml && wait
-    kubectl create -f hdfs.yaml && wait
-    kubectl create -f metastore.yaml && wait
-    kubectl create -f presto.yaml && wait
+#    kubectl create -f hdfs.yaml && wait
+#    kubectl create -f metastore.yaml && wait
+#    kubectl create -f presto.yaml && wait
 }
 
 function delete() {
