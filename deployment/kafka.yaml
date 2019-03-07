@@ -47,20 +47,6 @@ spec:
   selector:
     app: kafka
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: kafka-np
-spec:
-  ports:
-    - port: 9093
-      protocol: TCP
-      nodePort: 32092
-      targetPort: 9093
-  selector:
-    app: kafka
-  type: NodePort
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
