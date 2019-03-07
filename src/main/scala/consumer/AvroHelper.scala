@@ -4,9 +4,6 @@ import java.io.ByteArrayOutputStream
 import com.sksamuel.avro4s._
 import com.typesafe.scalalogging.LazyLogging
 
-case class User(id: Int, name: String, location: String)
-case class Msg(text: String, description: String, title: String, timestamp: Long, user: User)
-
 object AvroHelper extends LazyLogging {
   private val schema = AvroSchema[Msg]
 
