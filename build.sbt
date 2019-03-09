@@ -1,4 +1,4 @@
-name := "k8s-spark-kafka-hdfs"
+name := "bigkube"
 version := "0.1"
 scalaVersion := "2.11.12"
 
@@ -41,8 +41,9 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
 
-  "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
-  
+  "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion exclude ("org.apache.kafka","kafka"),
+  "org.apache.kafka" %% "kafka" % "2.1.0",
+
   "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.2",
 
   "com.github.azakordonets" % "fabricator_2.11" % "2.1.5" % Test
