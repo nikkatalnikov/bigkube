@@ -12,15 +12,15 @@ Bigkube is about big data and Spark local development automation - automated dep
 
 ####  Prerequisites
 
-1. Install Docker
-2. Install Minikube
-3. Install Helm
-4. Get Scala and SBT
+1. Install [Docker](https://docs.docker.com/install/)
+2. Install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+3. Get [Helm](https://github.com/helm/helm#install)
+4. Get [Scala](https://www.scala-lang.org/download/) and [SBT](https://www.scala-sbt.org/1.0/docs/Setup.html)
 5. Make sure SBT version is not less tan 1.2.8 and there's Scala 2.11 sdk is set for the project
 
 #### Before deployment 
 
-1. Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set.
+1. Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set (use ```minikube config set```).
 2. Run ```sbt assmbly``` repo's base dir. 
 
 #### Deployment steps
@@ -40,11 +40,17 @@ Note: bigkube.sh resolves all service accounts issues, secrets, config maps and 
 
 #### GUI
 1. ```minikube dashboard```
-2. Run ```minikube services list```. you can go to ```namenode``` and ```presto``` UI with corresponding URLs.
-3. One can use Metabase, an open source tool for rapid access data. Works with Presto and SQLServer as well. 
+2. Run ```minikube services list```. You can go to ```namenode``` and ```presto``` UI with corresponding URLs.
+3. One can use [Metabase](https://www.metabase.com/start/), an open source tool for rapid access data. Works with Presto and SQLServer as well. 
 
 #### Delete deployments
 
 Alongside with ```kubectl delete -f file.yaml``` you can use:
 1. ```./bigkube.sh --delete``` - deletes all bigkube infrastructure
 2. ```./bigkube.sh --spark-drop``` - deletes helmed spark operator 
+
+
+#### Thanks
+
+Thanks to [Nick Grigoriev](https://github.com/GrigorievNick) for the idea and help.
+Thanks to [Big Data Europe](https://github.com/big-data-europe) for Hadoop Docker images.
