@@ -20,7 +20,7 @@ Bigkube is about big data and Spark local development automation - automated dep
 
 #### Before deployment 
 
-1.Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set.
+1. Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set.
 2. Run ```sbt assmbly``` repo's base dir. 
 
 #### Deployment steps
