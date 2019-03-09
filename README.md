@@ -1,7 +1,12 @@
+<p align="center">
+    <img src="assets/bigkube.svg" width="200">
+</p>
+
 # Bigkube - effortless Spark applications deployment and testing in minikube. 
 
-#### About
-Bigkube is about local development automation - automated deployments, well fitted components, integration testing with SBT right from IDE console.
+----
+Bigkube is about big data and Spark local development automation - automated deployments, well fitted components, integration testing with SBT right from IDE console.
+----
 
 ####  Prerequisites
 
@@ -11,11 +16,10 @@ Bigkube is about local development automation - automated deployments, well fitt
 4. Get Scala and SBT
 5. Make sure SBT version is not less tan 1.2.8 and there's Scala 2.11 sdk is set for the project
 
-
 #### Before deployment 
 
-Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set.
-
+1.Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set.
+2. Run ```sbt assmbly``` repo's base dir. 
 
 #### Deployment steps
 
@@ -30,7 +34,12 @@ Note: bigkube.sh resolves all service accounts issues, secrets, config maps and 
 #### Run integration tests
 
 1. Write your own integration test using ```SparkController```. Examples provided.
-2. Simply run ```sbt assmbly && sbt it:test``` - and that's it, your Spark app is deployed into minikube and tests are executed locally on your host machine.
+2. Simply run ```sbt it:test``` from repo's base dir - and that's it, your Spark app is deployed into minikube and tests are executed locally on your host machine.
+
+#### GUI
+1. ```minikube dashboard```
+2. Run ```minikube services list```. you can go to ```namenode``` and ```presto``` UI with corresponding URLs.
+3. One can use Metabase, an open source tool for rapid access data. Works with Presto and SQLServer as well. 
 
 #### Delete deployments
 
