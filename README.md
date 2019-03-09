@@ -16,7 +16,7 @@ Bigkube is about big data and Spark local development automation - automated dep
 2. Install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 3. Get [Helm](https://github.com/helm/helm#install)
 4. Get [Scala](https://www.scala-lang.org/download/) and [SBT](https://www.scala-sbt.org/1.0/docs/Setup.html)
-5. Make sure SBT version is not less tan 1.2.8 and there's Scala 2.11 sdk is set for the project
+5. Make sure SBT version is not less than 1.2.8 and there's Scala 2.11 sdk is set for the project
 
 #### Before deployment 
 
@@ -50,7 +50,7 @@ Alongside with ```kubectl delete -f file.yaml``` you can use:
 2. ```./bigkube.sh --spark-drop``` - deletes helmed spark operator 
 
 
-#### Thanks
+#### Acknowledgments
 
 Thanks to [Nick Grigoriev](https://github.com/GrigorievNick) for the idea and help.
 Thanks to [Big Data Europe](https://github.com/big-data-europe) for Hadoop Docker images.
