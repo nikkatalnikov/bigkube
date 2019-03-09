@@ -2,10 +2,12 @@
     <img src="assets/bigkube.svg" width="200">
 </p>
 
-# Bigkube - effortless Spark applications deployment and testing in minikube. 
+# Bigkube - effortless Spark applications deployment and testing in minikube.
 
 ----
+
 Bigkube is about big data and Spark local development automation - automated deployments, well fitted components, integration testing with SBT right from IDE console.
+
 ----
 
 ####  Prerequisites
