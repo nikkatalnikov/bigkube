@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.2" baseProfile="tiny"
+	 id="svg2" inkscape:export-filename="/home/thockin/src/kubernetes/new.png" inkscape:export-xdpi="460.95001" inkscape:export-ydpi="460.95001" inkscape:version="0.48.4 r9939" sodipodi:docname="logo.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 700.6 685.4"
+	 xml:space="preserve">
+<sodipodi:namedview  bordercolor="#666666" borderopacity="1.0" fit-margin-bottom="10" fit-margin-left="10" fit-margin-right="10" fit-margin-top="10" id="base" inkscape:current-layer="g3052" inkscape:cx="277.56851" inkscape:cy="157.54494" inkscape:document-units="px" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:snap-global="false" inkscape:window-height="822" inkscape:window-maximized="0" inkscape:window-width="1519" inkscape:window-x="51" inkscape:window-y="25" inkscape:zoom="16.190509" pagecolor="#ffffff" showgrid="false">
+	</sodipodi:namedview>
+<path fill="#326CE5" d="M370.4,4.6L614.2,122c12.7,6.1,21.9,17.7,25,31.4l60.2,263.8c3.1,13.7-0.2,28.1-8.9,39.2L521.8,667.9
+	c-8.8,11-22.1,17.4-36.2,17.4H215c-14.1,0-27.4-6.4-36.2-17.4L10.1,456.4c-8.8-11-12.1-25.4-8.9-39.2l60.2-263.8
+	c3.1-13.7,12.4-25.3,25-31.4L330.2,4.6C342.9-1.5,357.7-1.5,370.4,4.6z"/>
+<path fill="#5A31AD" d="M330.2,595.2l-156.5-75.4c-12.7-6.1-21.9-17.7-25-31.4L110,319.1c-3.1-13.7,0.2-28.1,8.9-39.2l108.3-135.8
+	c8.8-11,22.1-17.4,36.2-17.4h173.7c14.1,0,27.4,6.4,36.2,17.4l108.3,135.8c8.8,11,12.1,25.4,8.9,39.2l-38.7,169.3
+	c-3.1,13.7-12.4,25.3-25,31.4l-156.5,75.4C357.7,601.3,342.9,601.3,330.2,595.2z"/>
+<rect x="332.8" y="340.8" fill="#400078" width="35" height="35"/>
+</svg>
