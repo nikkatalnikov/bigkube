@@ -2,7 +2,7 @@
     <img src="assets/bigkube.svg" width="200">
 </p>
 
-# Bigkube - effortless Spark applications deployment and testing in minikube.
+## Bigkube - effortless Spark applications deployment and testing in minikube.
 
 ----
 
