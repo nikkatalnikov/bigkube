@@ -54,3 +54,4 @@ Alongside with ```kubectl delete -f file.yaml``` you can use:
 
 Thanks to [Nick Grigoriev](https://github.com/GrigorievNick) for the idea and help.
 Thanks to [Big Data Europe](https://github.com/big-data-europe) for Hadoop Docker images.
+Thanks to [Valeira Katalnikova](mailto:lelia.katalnikova@icloud.com) for Bigkube logo.
