@@ -11,6 +11,7 @@ import scala.collection.JavaConverters._
 class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
   private val config = ConfigFactory.load("it")
   private val localKafkaUrl = config.getString("kafka.url")
+  private val MSSQLServiceInstance = consumer.MSSQLService("sqlserver", config)
   private val tableName = config.getString("hive.tableName")
 
   private val topics = config
@@ -61,6 +62,21 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
     val count = PrestoService.execStatement(singleRowQ, _.getInt(1)).head
 
     count should be > 0
+  }
+
+    test("it reads data from Kafka topics and stores it to mssql") {
+    val usr = MSSQLServiceInstance.getRandomUser
+
+    println(s"usr: $usr")
+    usr shouldBe a [consumer.User]
+  }
+
+  test("it reads data from Kafka topics and stores it respecting foreign keys") {
+    val usr = MSSQLServiceInstance.getRandomUser
+    val msgs = MSSQLServiceInstance.getUserMsgs(usr.id).head
+
+    println(s"msgs joined: $msgs")
+    msgs shouldBe a [consumer.Msg]
   }
 
   override def afterAll(): Unit = {
