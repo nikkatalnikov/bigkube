@@ -11,15 +11,14 @@ Bigkube is about big data and Spark local development automation - automated dep
 ----
     
 ####  Prerequisites
-0. Run ``powershell`` as Administrator.
-1. Install [virtualbox](https://docs.docker.com/install/)
-1. Install [Docker for windows]()
-1. Turn of Hyper-V. ``````
-2. Install [choco](https://chocolatey.org/)
-5. Install [Minikube](https://chocolatey.org/packages/Minikube)
-6. Install [kubernetes-ctl](https://chocolatey.org/packages/kubernetes-cli)
-7. Install [Helm](https://chocolatey.org/packages/kubernetes-helm)
-8. Install [SBT](https://chocolatey.org/packages/sbt)
+1. Run ``powershell`` as Administrator.
+2. Turn of Hyper-V. ```Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All```
+3. Install [virtualbox](https://docs.docker.com/install/)
+4. Install [Docker for windows](https://docs.docker.com/docker-for-windows/install/)
+5. Install [choco](https://chocolatey.org/)
+6. Install [Minikube](https://chocolatey.org/packages/Minikube)
+7. Install [kubernetes-ctl](https://chocolatey.org/packages/kubernetes-cli)
+8. Install [Helm](https://chocolatey.org/packages/kubernetes-helm)
 9. Install [JDK](https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows)
 10. Install [SBT](https://chocolatey.org/packages/sbt)
 11. Make sure SBT version is not less than 1.2.8 and there's Scala 2.11 sdk is set for the project
