@@ -56,13 +56,13 @@ class KafkaTest extends FunSuite with BeforeAndAfterAll with Matchers {
     // let Spark Streaming fetch latest from Kafka msg and store it
     Thread.sleep(60000)
   }
-
-  test("it reads data from Kafka topics and stores it to hdfs") {
-    val singleRowQ = s"SELECT COUNT(*) FROM $tableName"
-    val count = PrestoService.execStatement(singleRowQ, _.getInt(1)).head
-
-    count should be > 0
-  }
+//
+//  test("it reads data from Kafka topics and stores it to hdfs") {
+//    val singleRowQ = s"SELECT COUNT(*) FROM $tableName"
+//    val count = PrestoService.execStatement(singleRowQ, _.getInt(1)).head
+//
+//    count should be > 0
+//  }
 
     test("it reads data from Kafka topics and stores it to mssql") {
     val usr = MSSQLServiceInstance.getRandomUser
