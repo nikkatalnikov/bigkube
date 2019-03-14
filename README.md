@@ -17,7 +17,6 @@ Bigkube is about big data and Spark local development automation - automated dep
 3. Get [Helm](https://github.com/helm/helm#install)
 4. Get [Scala](https://www.scala-lang.org/download/) and [SBT](https://www.scala-sbt.org/1.0/docs/Setup.html)
 5. Make sure SBT version is not less than 1.2.8 and there's Scala 2.11 sdk is set for the project
-6. Get [sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility?view=sql-server-2017)
 
 #### Before deployment 
 
