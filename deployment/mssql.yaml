@@ -35,6 +35,10 @@ spec:
       containers:
         - name: mssql
           image: microsoft/mssql-server-linux:2017-latest
+          command:
+            - /bin/sh
+            - -c
+            - /opt/mssql/bin/sqlservr & sleep 30 && echo "CREATE DATABASE test" >> create_db.sql &&  echo "GO" >> create_db.sql && /opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -i create_db.sql
           env:
             - name: MSSQL_PID
               value: Express
