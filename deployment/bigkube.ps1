@@ -38,11 +38,12 @@ function create()
 {
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
-    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
     kubectl create -f mssql.yaml; if ($?) { wait }
     $MSSQL_NODE_PORT=$(kubectl get svc mssql -o=jsonpath='{.spec.ports[?(@.port==1433)].nodePort}')
     Invoke-Sqlcmd -ServerInstance "$(minikube ip),$MSSQL_NODE_PORT" -Username  sa -Password YOUR_PASSWORD_123_abcd -InputFile create_db.sql
     kubectl create -f kafka.yaml; if ($?) { wait }
+    kubectl create -f schema-registry.yaml; if ($?) { wait }
+    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
     kubectl create -f hdfs.yaml; if ($?) { wait }
     kubectl create -f metastore.yaml; if ($?) { wait }
     kubectl create -f presto.yaml; if ($?) { wait }
