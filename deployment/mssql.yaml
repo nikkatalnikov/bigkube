@@ -5,11 +5,11 @@ metadata:
   labels:
     app: mssql
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-    - protocol: TCP
+    - name: external
       port: 1433
-      targetPort: 1433
+      nodePort: 31433
   selector:
     app: mssql
 
