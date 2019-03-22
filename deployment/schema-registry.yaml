@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: cp-schema-registry-external
   labels:
-    app: cp-schema-registry-external
+    app: cp-schema-registry
 spec:
   type: NodePort
   ports:

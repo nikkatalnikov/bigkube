@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mssql-init-command
+spec:
+  containers:
+    - name: mssql-init-command
+      image: mcr.microsoft.com/mssql-tools
+      command: ["/opt/mssql-tools/bin/sqlcmd"]
+      args: ["-S", "mssql,1433", "-U", "sa" ,"-P", "YOUR_PASSWORD_123_abcd", "-m", "0",
+             "-Q", "CREATE DATABASE test;"]
+  restartPolicy: Never
