@@ -12,6 +12,10 @@ lazy val root = Project(id = "root", base = file("."))
 
 resolvers += "Confluent Maven Repository" at "https://packages.confluent.io/maven/"
 
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-core" % "2.8.7"
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.8.7"
+dependencyOverrides += "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.8.7"
+
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
@@ -28,8 +32,9 @@ libraryDependencies ++= Seq(
 
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
   "com.typesafe" % "config" % "1.0.2",
-  "io.kubernetes" % "client-java" % "4.0.0",
-  "org.json" % "json" % "20180813",
+  "io.fabric8" % "kubernetes-client" % "4.1.3"  % Test,
+  "com.lihaoyi" %% "pprint" % "0.5.3" % Test,
+  "org.json" % "json" % "20180813" % Test,
 
   "org.scalatest" %% "scalatest" % "3.2.0-SNAP10" % Test,
   "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
