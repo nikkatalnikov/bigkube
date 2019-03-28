@@ -5,14 +5,14 @@ metadata:
   labels:
     app: mssql
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 1433
       targetPort: 1433
+      nodePort: 31433
   selector:
     app: mssql
-
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -60,4 +60,3 @@ spec:
         resources:
           requests:
             storage: 8Gi
-

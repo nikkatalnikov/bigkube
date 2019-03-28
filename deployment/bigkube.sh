@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function wait() {
-    while [ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v Running | wc -l) != 0 ]; do
+    while [ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v "Running\|Succeeded\|Completed" | wc -l) != 0 ]; do
         sleep 1
     done
 }
@@ -28,14 +28,15 @@ function drop_spark_operator() {
 function create() {
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
-    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
     kubectl create -f mssql.yaml && wait
-    local MSSQL_NODE_PORT=$(kubectl get svc mssql -o=jsonpath='{.spec.ports[?(@.port==1433)].nodePort}')
-    sqlcmd -S $(minikube ip),MSSQL_NODE_PORT -U sa -P YOUR_PASSWORD_123_abcd -i create_db.sql
+    kubectl create -f mssql-init-command.yaml && wait
+    kubectl logs -f mssql-init-command
     kubectl create -f kafka.yaml && wait
-    kubectl create -f hdfs.yaml && wait
-    kubectl create -f metastore.yaml && wait
-    kubectl create -f presto.yaml && wait
+    kubectl create -f schema-registry.yaml && wait
+#    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
+#    kubectl create -f hdfs.yaml && wait
+#    kubectl create -f metastore.yaml && wait
+#    kubectl create -f presto.yaml && wait
 }
 
 function delete() {
