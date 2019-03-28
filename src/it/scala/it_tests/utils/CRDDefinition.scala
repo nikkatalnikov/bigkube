@@ -62,13 +62,6 @@ case class Status @JsonCreator() (@JsonProperty("applicationState") applicationS
                                   @JsonProperty("executionAttempts") executionAttempts: Option[Int],
                                   @JsonProperty("driverInfo") driverInfo: DriverInfo)
 
-case class DriverInfo @JsonCreator() (@JsonProperty("podName") podName: Option[String],
-                                      @JsonProperty("webUIPort") webUIPort: Option[Int],
-                                      @JsonProperty("webUIServiceName") webUIServiceName: Option[String])
-
-case class ApplicationState @JsonCreator() (@JsonProperty("state") state: String,
-                                            @JsonProperty("errorMessage") errorMessage: String) {}
-
 case class ScheduledSparkApplication @JsonCreator() (@JsonProperty("scheduledSparkApplicationSpec") scheduledSparkApplicationSpec: Spec,
                                                      @JsonProperty("scheduledSparkApplicationStatus") scheduledSparkApplicationStatus: Option[Status])
 
