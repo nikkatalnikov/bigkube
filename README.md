@@ -21,7 +21,7 @@ Bigkube is about big data and Spark local development automation - automated dep
 #### Before deployment 
 
 1. Make sure minikube has --cpus=4 --memory=8192 flags set. Make sure the appropriate vm-driver is set (use ```minikube config set```).
-2. Run ```sbt assmbly``` repo's base dir. 
+2. Run ```sbt assembly``` repo's base dir. 
 
 #### Deployment steps
 
@@ -47,8 +47,19 @@ Note: bigkube.sh resolves all service accounts issues, secrets, config maps and 
 
 Alongside with ```kubectl delete -f file.yaml``` you can use:
 1. ```./bigkube.sh --delete``` - deletes all bigkube infrastructure
-2. ```./bigkube.sh --spark-drop``` - deletes helmed spark operator 
+2. ```./bigkube.sh --spark-drop``` - deletes helmed spark operator
 
+---
+
+### **Airflow** inside of the bigkube with custom Spark Operator
+
+1. ```cd deployment```
+2. You need just run ```./bigkube.sh --airflow-init``` and all necessary **airflow** staff should be up and running
+3. ```minikube service airflow``` will open your browser with Airflow UI
+
+For more details, please visit this repository [Airflow](https://github.com/viktor-pecheniuk/airflow-sandbox)
+
+---
 
 #### Acknowledgments
 

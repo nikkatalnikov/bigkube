@@ -43,6 +43,15 @@ function delete() {
     kubectl delete -f ./
 }
 
+function build_airflow() {
+    cd ../airflow
+    docker build -f build/Dockerfile -t airflow-sandbox .
+    docker tag airflow-sandbox localhost:5000/airflow-sandbox:0.1.0
+    docker push localhost:5000/airflow-sandbox:0.1.0
+    kubectl create -f ../deployment/postgres.yaml && wait
+    kubectl create -f ../deployment/airflow.yaml && wait
+}
+
 cd "$(dirname "$0")"
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -60,6 +69,9 @@ while [ $# -gt 0 ]; do
             ;;
         --delete)
             delete
+            ;;
+        --airflow-init)
+            build_airflow
             ;;
         -*)
             # do not exit out, just note failure

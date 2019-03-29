@@ -8,18 +8,11 @@ spec:
   mode: cluster
   image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
   imagePullPolicy: Always
-  mainClass: consumer.KafkaConsumer
-  mainApplicationFile: "http://192.168.0.104:8080/bigkube-assembly-0.1.jar"  # check IP
+  mainClass: org.apache.spark.examples.SparkPi
+  mainApplicationFile: local:///opt/spark/examples/jars/spark-examples_2.11-2.4.0.jar
   sparkVersion: "2.4.0"
   restartPolicy:
     type: Never
-  hadoopConf:
-    "fs.defaultFS": "hdfs://namenode:8020"
-    "javax.jdo.option.ConnectionURL": "jdbc:postgresql://postgresql/metastore"
-    "javax.jdo.option.ConnectionDriverName": "org.postgresql.Driver"
-    "javax.jdo.option.ConnectionUserName": "hive"
-    "javax.jdo.option.ConnectionPassword": "hive"
-    "hive.metastore.uris": "thrift://hive-metastore:9083"
   driver:
     cores: 0.1
     coreLimit: 1000m
@@ -27,13 +20,6 @@ spec:
     labels:
       version: 2.4.0
     serviceAccount: default
-    envSecretKeyRefs:
-      DB_PASSWORD:
-        name: mssql-password
-        key: password
-      DB_USER:
-        name: mssql-user
-        key: user
   executor:
     cores: 1
     instances: 1

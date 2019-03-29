@@ -1,0 +1,5 @@
+**/.dockerignore
+**/.git
+**/.gitignore
+**/__pycache__
+**/Dockerfile
