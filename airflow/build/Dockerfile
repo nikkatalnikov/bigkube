@@ -12,7 +12,7 @@ ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
 ENV PYTHONPATH=$AIRFLOW_HOME
 
 RUN apt-get update \
-  && apt-get install -y supervisor \
+  && apt-get install -y supervisor vim \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/* \
   && pip install apache-airflow[postgres]==${AIRFLOW_VERSION} \

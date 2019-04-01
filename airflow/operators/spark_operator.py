@@ -32,8 +32,11 @@ class SparkJobOperator(BaseOperator):
         self.plural = 'sparkapplications'
 
     def execute(self, context):
-        # TODO check later with prod kube
-        config = kube_config.load_kube_config()
+        # initialize config
+        try:
+            config = kube_config.load_incluster_config()
+        except:
+            config = kube_config.load_kube_config()
         # create an instance of the API class
         api_instance = CustomObjectsApi(ApiClient(config))
         # params to create custom object
