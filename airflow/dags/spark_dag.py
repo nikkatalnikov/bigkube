@@ -1,4 +1,3 @@
-import os
 import time
 
 from datetime import datetime, timedelta
@@ -8,11 +7,13 @@ from airflow.operators.bash_operator import BashOperator
 
 from operators.spark_operator import SparkJobOperator
 
+SPARK_JOBS_PATH = 'app/airflow/jobs'
+
 
 default_args = {
     'owner': 'viktor',
     'depends_on_past': False,
-    'start_date': datetime.today() - timedelta(days=1),
+    'start_date': datetime.today() - timedelta(minutes=10),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -36,7 +37,7 @@ test_job = SparkJobOperator(
     task_id='k8s_spark',
     namespace='default',
     job_name='spark-pi-{}'.format(int(time.time())),
-    yml_file='{}/jobs/spark_example.yaml'.format(os.path.abspath('.')),
+    yml_file='{}/spark_example.yaml'.format(SPARK_JOBS_PATH),
     timeout=300,
     dag=dag
 )

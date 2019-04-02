@@ -1,3 +1,10 @@
 .idea
 target
 .DS_Store
+
+# python section
+*__pycache__
+*.py[cod]
+*$py.class
+*.pyc
+
