@@ -1,0 +1,38 @@
+# POSTGRES DEPLOYMENT
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres-airflow
+spec:
+  template:
+    metadata:
+      labels:
+        app: postgres-airflow
+    spec:
+      containers:
+      - name: postgres-airflow
+        image: postgres:9.6.5
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: airflow
+          - name: POSTGRES_USER
+            value: airflow
+          - name: POSTGRES_PASSWORD
+            value: airflow_password
+
+---
+
+# POSTGRES SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-airflow
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-airflow

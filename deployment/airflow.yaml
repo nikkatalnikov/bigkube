@@ -1,0 +1,49 @@
+# DEPLOYMENT
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: airflow
+  labels:
+    app: airflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airflow
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: airflow
+        tier: app
+    spec:
+      containers:
+      - image: localhost:5000/airflow-sandbox:0.1.0  # replace it on your image
+        name: airflow-sandbox
+        env:
+          - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+            value: postgresql://airflow:airflow_password@postgres-airflow/airflow
+        ports:
+        - containerPort: 5001
+          protocol: TCP
+
+---
+
+# SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: airflow
+  labels:
+    app: airflow
+spec:
+  ports:
+  - port: 5001
+    protocol: TCP
+    targetPort: 5001
+    nodePort: 30050
+  selector:
+    app: airflow
+  type: NodePort
