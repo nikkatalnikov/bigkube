@@ -4,6 +4,8 @@ scalaVersion := "2.11.12"
 
 val sparkVersion = "2.4.0"
 val circeVersion = "0.11.0"
+val kafkaVersion = "2.1.0"
+val confluentVersion = "5.1.2"
 
 lazy val IntegrationTest = config("it") extend Test
 lazy val root = Project(id = "root", base = file("."))
@@ -17,6 +19,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-hive" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion,
+  "org.apache.spark" %% "spark-avro" % sparkVersion,
 
   "io.reactivex" %% "rxscala" % "0.26.5",
 
@@ -42,7 +46,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % circeVersion,
 
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion exclude ("org.apache.kafka","kafka"),
-  "org.apache.kafka" %% "kafka" % "2.1.0",
+  "org.apache.kafka" %% "kafka" % kafkaVersion,
+  "io.confluent" % "kafka-avro-serializer" % confluentVersion,
 
   "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.2",
 
