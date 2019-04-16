@@ -54,6 +54,8 @@ libraryDependencies ++= Seq(
   "com.github.azakordonets" % "fabricator_2.11" % "2.1.5" % Test
 )
 
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7"
+
 assemblyMergeStrategy in assembly := {
   case PathList("application.conf") => MergeStrategy.concat
   case PathList("git.properties") => MergeStrategy.first
