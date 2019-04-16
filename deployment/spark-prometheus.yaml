@@ -8,8 +8,8 @@ spec:
   mode: cluster
   image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
   imagePullPolicy: Always
-  mainClass: consumer.KafkaConsumer
-  mainApplicationFile: "http://192.168.0.104:8080/bigkube-assembly-0.1.jar"
+  mainClass: datakeeper.DataKeeper
+  mainApplicationFile: "http://192.168.0.100:8080/bigkube-assembly-0.1.jar"
   sparkVersion: "2.4.0"
   restartPolicy:
     type: Never
