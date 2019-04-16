@@ -15,7 +15,7 @@ function serve_jar_directory () {
 }
 
 function init_spark_operator() {
-    kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
+    kubectl create clusterrolebinding default --clusterrole=cluster-admin --serviceaccount=default:default --namespace=default
     helm init --wait &&
     helm install incubator/sparkoperator --namespace spark-operator --set enableWebhook=true
 }
@@ -24,7 +24,6 @@ function drop_spark_operator() {
     kubectl delete -f spark-prometheus.yaml
     helm delete $(helm list --namespace=spark-operator --short)
 }
-
 function create() {
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
@@ -33,10 +32,10 @@ function create() {
     kubectl logs -f mssql-init-command
     kubectl create -f kafka.yaml && wait
     kubectl create -f schema-registry.yaml && wait
-#    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
-#    kubectl create -f hdfs.yaml && wait
-#    kubectl create -f metastore.yaml && wait
-#    kubectl create -f presto.yaml && wait
+    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
+    kubectl create -f hdfs.yaml && wait
+    kubectl create -f metastore.yaml && wait
+    kubectl create -f presto.yaml && wait
 }
 
 function delete() {
