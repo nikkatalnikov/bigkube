@@ -87,10 +87,11 @@ class SparkController(crdNamespace: String, resourceName: String) {
       .takeWhile(x => {
         x.status match {
           case None => false
-          case Some(status) => status.applicationState.state != SparkOperatorStatus.CompletedState
+          case Some(status) => status.applicationState.state == SparkOperatorStatus.RunningState
         }
       })
       .onErrorResumeNext(_ => Observable.empty)
+      .toBlocking
       .subscribe(x => println(s"Monitoring CRD status while running: $x"))
   }
 
