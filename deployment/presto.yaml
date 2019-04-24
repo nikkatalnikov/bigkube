@@ -24,7 +24,13 @@ spec:
     spec:
       containers:
         - name: presto
-          image: nikkatalnikov/docker-presto:300
-          imagePullPolicy: Never
+          image: shawnzhu/prestodb:0.215
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - mountPath: home/presto/etc
+              name: presto-etc
+      volumes:
+        - name: presto-etc
+          hostPath:
+            path: "/presto-etc"
