@@ -33,10 +33,6 @@ spec:
               value: test
           image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
           name: namenode
-          args:
-            - "/run.sh &"
-            - "/opt/hadoop-2.7.4/sbin/httpfs.sh"
-            - "start"
           envFrom:
             - configMapRef:
                 name: hive-env
