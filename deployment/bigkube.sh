@@ -24,7 +24,9 @@ function drop_spark_operator() {
     kubectl delete -f spark-prometheus.yaml
     helm delete $(helm list --namespace=spark-operator --short)
 }
+
 function create() {
+    minikube ssh echo "sudo ip link set docker0 promisc on"
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
     kubectl create -f mssql.yaml && wait
@@ -34,7 +36,10 @@ function create() {
     kubectl create -f schema-registry.yaml && wait
     kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
     kubectl create -f hdfs.yaml && wait
+    local NAMENODE_POD=$(kubectl get pods -l hdfs=namenode -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+    kubectl exec ${NAMENODE_POD} /opt/hadoop-2.7.4/sbin/httpfs.sh start
     kubectl create -f metastore.yaml && wait
+    minikube mount presto-etc:/presto-etc &
     kubectl create -f presto.yaml && wait
 }
 
