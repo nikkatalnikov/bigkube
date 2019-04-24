@@ -11,8 +11,13 @@ lazy val IntegrationTest = config("it") extend Test
 lazy val root = Project(id = "root", base = file("."))
   .configs(IntegrationTest)
   .settings(Defaults.itSettings: _*)
+  .settings(fork in IntegrationTest := true)
 
 resolvers += "Confluent Maven Repository" at "https://packages.confluent.io/maven/"
+
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-core" % "2.9.5"
+dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.5"
+dependencyOverrides += "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.9.5"
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
@@ -32,29 +37,23 @@ libraryDependencies ++= Seq(
 
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
   "com.typesafe" % "config" % "1.0.2",
-  "io.kubernetes" % "client-java" % "4.0.0",
-  "org.json" % "json" % "20180813",
+  "io.kubernetes" % "client-java" % "4.0.0" % Test,
+  "org.json" % "json" % "20180813" % Test,
 
   "org.scalatest" %% "scalatest" % "3.2.0-SNAP10" % Test,
   "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
+  ("org.apache.avro" % "avro-ipc" % "1.8.2" classifier "tests") % Test,
 
-  "org.apache.logging.log4j" % "log4j-core" % "2.7",
-  "org.apache.logging.log4j" % "log4j-api" % "2.7",
-
-  "io.circe" %% "circe-core" % circeVersion,
-  "io.circe" %% "circe-generic" % circeVersion,
-  "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-core" % circeVersion % Test,
+  "io.circe" %% "circe-generic" % circeVersion % Test,
+  "io.circe" %% "circe-parser" % circeVersion % Test,
 
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion exclude ("org.apache.kafka","kafka"),
   "org.apache.kafka" %% "kafka" % kafkaVersion,
-  "io.confluent" % "kafka-avro-serializer" % confluentVersion,
-
-  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.2",
-
-  "com.github.azakordonets" % "fabricator_2.11" % "2.1.5" % Test
+  "io.confluent" % "kafka-avro-serializer" % confluentVersion
 )
 
-dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7"
+assemblyJarName in assembly := "datakeeper.jar"
 
 assemblyMergeStrategy in assembly := {
   case PathList("application.conf") => MergeStrategy.concat
