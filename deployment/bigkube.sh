@@ -26,7 +26,7 @@ function drop_spark_operator() {
 }
 
 function create() {
-    minikube ssh echo "sudo ip link set docker0 promisc on"
+    minikube ssh sudo ip link set docker0 promisc on
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
     kubectl create -f mssql.yaml && wait
