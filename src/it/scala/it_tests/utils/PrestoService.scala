@@ -6,17 +6,23 @@ import java.util.Properties
 import com.typesafe.config.ConfigFactory
 
 object PrestoService {
-  private val config = ConfigFactory.load("it")
-
+  private val config = ConfigFactory.load("it.conf")
   private val properties = new Properties()
-  properties.setProperty("user", config.getString("prestodb.db.user"))
-  properties.setProperty("password", config.getString("prestodb.db.password"))
+  properties.setProperty("user", config.getString("prestodb.user"))
+  properties.setProperty("password", config.getString("prestodb.password"))
 
-  private val url = config.getString("prestodb.db.url")
+  private val url = config.getString("prestodb.url")
 
   private val connection: Connection = DriverManager.getConnection(url, properties)
 
-  def execStatement[T](sql: String, f: ResultSet => T): Stream[T] = {
+  def execStatement(sql: String): Boolean = {
+    val statement = connection.createStatement()
+    val rs = statement.execute(sql)
+    statement.close()
+    rs
+  }
+
+  def execQuery[T](sql: String, f: ResultSet => T): Stream[T] = {
     val statement = connection.createStatement()
     val rs = statement.executeQuery(sql)
 

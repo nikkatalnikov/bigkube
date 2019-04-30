@@ -10,6 +10,9 @@ spec:
     - name: hdfs
       port: 50070
       nodePort: 30070
+    - name: httpfs
+      port: 14000
+      nodePort: 31400
   selector:
     hdfs: namenode
 ---
@@ -36,6 +39,7 @@ spec:
           ports:
             - containerPort: 50070
             - containerPort: 8020
+            - containerPort: 14000
           volumeMounts:
             - mountPath: /hadoop/dfs/name
               name: namenode

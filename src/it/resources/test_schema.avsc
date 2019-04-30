@@ -1,0 +1,78 @@
+{
+  "namespace": "datakeeper-test",
+  "type": "record",
+  "name": "test",
+  "fields": [
+    {"name": "id", "type": "long"},
+    {"name": "has_account", "type": "boolean"},
+    {"name": "group_id", "type": "int"},
+    {"name": "match_precision_float", "type": "float"},
+    {"name": "match_precision_double", "type": "double"},
+    {"name": "account_level", "type": ["int", "null"]},
+    {
+      "name" : "last_visited",
+      "type" :
+      {
+        "type" : "long",
+        "logicalType" : "timestamp-millis"
+      }
+    },
+    {
+      "name" : "amount_payed",
+      "type" :
+      {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 4,
+        "scale": 2
+      }
+    },
+    {
+      "name": "registration_date",
+      "type": "int",
+      "logicalType": "date"
+    },
+    {
+      "name": "fingertips",
+      "type": {
+        "name": "fingertips",
+        "type": "fixed",
+        "size": 16
+      }
+    },
+    {
+      "name": "friends_ids",
+      "type" : {
+        "type" : "array",
+        "items" : "long"
+      }
+    },
+    {
+      "name": "preferences",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    },
+    {
+      "name": "personal_record",
+      "type": {
+        "name": "personal_record",
+        "type": "record",
+        "fields": [
+          {"name": "name", "type": "string"},
+          {"name": "surname", "type": "string"},
+          {"name": "email", "type": "string"}
+        ]
+      }
+    },
+    {
+      "name": "country_code",
+      "type": {
+        "name": "country_code",
+        "type": "enum",
+        "symbols" : ["US", "CA", "UK"]
+      }
+    }
+  ]
+}
