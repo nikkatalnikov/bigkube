@@ -6,17 +6,28 @@ function wait() {
     done
 }
 
+function get_docker_network_interface_name() {
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        echo docker0
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo en0
+    else
+        echo docker0
+    fi
+}
+
 function serve_jar_directory () {
     docker rm nginx-jar-server -f
     local PARENT_DIR=$(cd ../ && pwd)
     docker run --name nginx-jar-server -v ${PARENT_DIR}/target/scala-2.11:/usr/share/nginx/html:ro -d -p 8080:80 nginx
     echo "don't forget to pass following ip into your Spark CRD declaration to mainApplicationFile field:"
-    ifconfig en0 | awk '$1 == "inet" {print $2}'
+    ifconfig $(get_docker_network_interface_name) | awk '$1 == "inet" {print $2}'
 }
 
 function init_spark_operator() {
     kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
     helm init --wait &&
+    helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator &&
     helm install incubator/sparkoperator --namespace spark-operator --set enableWebhook=true
 }
 
