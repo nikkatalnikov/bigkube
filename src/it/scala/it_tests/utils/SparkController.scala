@@ -68,7 +68,7 @@ class SparkController(crdNamespace: String, resourceName: String) {
       case Failure(ex) =>
         throw new RuntimeException(ex)
       case Success(x) =>
-        println(s"applied successfully: $x")
+        println(s"Startup finished successfully: $x")
     }
 
     Await.result(apiCall, Duration.Inf)
@@ -110,9 +110,9 @@ class SparkController(crdNamespace: String, resourceName: String) {
 
     apiCall onComplete {
       case Failure(ex) =>
-        println(s"failed with error: $ex")
+        println(s"Cleanup failed with error: $ex")
       case Success(x) =>
-        println(s"applied successfully: $x")
+        println(s"Cleanup finished successfully: $x")
     }
 
     Await.result(apiCall, Duration.Inf)
