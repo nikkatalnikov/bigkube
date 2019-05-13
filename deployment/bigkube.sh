@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function wait() {
-    while [ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v "Running\|Succeeded\|Completed" | wc -l) != 0 ]; do
+    while [[ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v "Running\|Succeeded\|Completed" | wc -l) != 0 ]]; do
         sleep 1
     done
 }
@@ -25,7 +25,7 @@ function serve_jar_directory () {
 }
 
 function init_spark_operator() {
-    kubectl create clusterrolebinding default --clusterrole=edit --serviceaccount=default:default --namespace=default
+    kubectl create clusterrolebinding default --clusterrole=cluster-admin --serviceaccount=default:default --namespace=default
     helm init --wait &&
     helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator &&
     helm install incubator/sparkoperator --namespace spark-operator --set enableWebhook=true
@@ -37,6 +37,7 @@ function drop_spark_operator() {
 }
 
 function create() {
+    minikube ssh -- sudo ip link set docker0 promisc on
     kubectl create secret generic mssql-user --from-literal=user=sa
     kubectl create secret generic mssql-password --from-literal=password=YOUR_PASSWORD_123_abcd
     kubectl create -f mssql.yaml && wait
@@ -44,10 +45,13 @@ function create() {
     kubectl logs -f mssql-init-command
     kubectl create -f kafka.yaml && wait
     kubectl create -f schema-registry.yaml && wait
-#    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
-#    kubectl create -f hdfs.yaml && wait
-#    kubectl create -f metastore.yaml && wait
-#    kubectl create -f presto.yaml && wait
+    kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
+    kubectl create -f hdfs.yaml && wait
+    local NAMENODE_POD=$(kubectl get pods -l hdfs=namenode -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+    kubectl exec ${NAMENODE_POD} /opt/hadoop-2.7.4/sbin/httpfs.sh start
+    kubectl create -f metastore.yaml && wait
+    minikube mount presto-etc:/presto-etc &
+    kubectl create -f presto.yaml && wait
 }
 
 function delete() {
@@ -64,7 +68,7 @@ function build_airflow() {
 }
 
 cd "$(dirname "$0")"
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
         --serve-jar)
             serve_jar_directory
@@ -80,9 +84,6 @@ while [ $# -gt 0 ]; do
             ;;
         --delete)
             delete
-            ;;
-        --airflow-init)
-            build_airflow
             ;;
         -*)
             # do not exit out, just note failure
