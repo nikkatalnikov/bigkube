@@ -18,7 +18,6 @@ object KafkaConsumer extends LazyLogging {
   private val config = ConfigFactory.load()
   private val localKafkaUrl = config.getString("minikube.kafka.url")
   private val groupId = config.getString("minikube.kafka.groupId")
-  private val tableName = config.getString("minikube.hive.tableName")
 
   private val mssqlConfigMap = Map(
     "url"            -> config.getString("minikube.sqlserver.db.urlForSpark"),
@@ -43,7 +42,7 @@ object KafkaConsumer extends LazyLogging {
     "enable.auto.commit" -> (false: java.lang.Boolean)
   )
 
-  val sparkConf: SparkConf = new SparkConf().setAppName("KafkaAvroToHDFSWriter")
+  val sparkConf: SparkConf = new SparkConf().setAppName("KafkaAvroToMSSQLSink")
   val spark: SparkSession = SparkSession
     .builder()
     .config(sparkConf)
@@ -73,26 +72,26 @@ object KafkaConsumer extends LazyLogging {
             .map(x => deserializeMsg(x.value))
             .map(_.normalize())
 
-          normalizedData
-            .map(_._1)
-            .toDF
-            .write
-            .mode(SaveMode.Append)
-            .format("parquet")
-            .saveAsTable(tableName)
+//          normalizedData
+//            .map(_._1)
+//            .toDF
+//            .write
+//            .mode(SaveMode.Append)
+//            .format("parquet")
+//            .saveAsTable(tableName)
 
           normalizedData
             .map(_._1)
             .toDF
             .write
-            .mode(SaveMode.Append)
+            .mode(SaveMode.Overwrite)
             .sqlDB(msgSinkConf)
 
           normalizedData
             .map(_._2)
             .toDF
             .write
-            .mode(SaveMode.Append)
+            .mode(SaveMode.Overwrite)
             .sqlDB(userSinkConf)
         }
 

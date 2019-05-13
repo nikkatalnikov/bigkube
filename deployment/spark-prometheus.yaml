@@ -9,7 +9,7 @@ spec:
   image: "gcr.io/spark-operator/spark:v2.4.0-gcs-prometheus"
   imagePullPolicy: Always
   mainClass: consumer.KafkaConsumer
-  mainApplicationFile: "http://192.168.0.104:8080/bigkube-assembly-0.1.jar"  # check IP
+  mainApplicationFile: "http://172.29.224.36:8080/bigkube-assembly-0.1.jar"  # check IP
   sparkVersion: "2.4.0"
   restartPolicy:
     type: Never

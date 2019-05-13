@@ -18,8 +18,6 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
   "org.apache.spark" %% "spark-hive" % sparkVersion % "provided",
 
-  "io.reactivex" %% "rxscala" % "0.26.5",
-
   "com.facebook.presto" % "presto-jdbc" % "0.151" % Test,
   "com.microsoft.azure" % "azure-sqldb-spark" % "1.0.2",
   "com.microsoft.sqlserver" % "mssql-jdbc" % "7.2.0.jre8",
@@ -28,8 +26,6 @@ libraryDependencies ++= Seq(
 
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
   "com.typesafe" % "config" % "1.0.2",
-  "io.kubernetes" % "client-java" % "4.0.0",
-  "org.json" % "json" % "20180813",
 
   "org.scalatest" %% "scalatest" % "3.2.0-SNAP10" % Test,
   "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
@@ -37,9 +33,7 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.7",
   "org.apache.logging.log4j" % "log4j-api" % "2.7",
 
-  "io.circe" %% "circe-core" % circeVersion,
-  "io.circe" %% "circe-generic" % circeVersion,
-  "io.circe" %% "circe-parser" % circeVersion,
+  "io.fabric8" % "kubernetes-client" % "4.2.2" % Test,
 
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion exclude ("org.apache.kafka","kafka"),
   "org.apache.kafka" %% "kafka" % "2.1.0",
