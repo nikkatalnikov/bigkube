@@ -46,6 +46,20 @@ spec:
   selector:
     app: kafka
 ---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kafka-headless-external
+spec:
+  selector:
+    app: kafka
+  ports:
+    - protocol: TCP
+      targetPort: 32400
+      port: 32400
+      nodePort: 32400
+  type: NodePort
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -69,15 +83,15 @@ spec:
           env:
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: zookeeper-headless:2181
-            - name: KAFKA_ADVERTISED_LISTENERS
-              value: PLAINTEXT://kafka-broker-0.kafka-headless.default.svc.cluster.local:9092,EXTERNAL://192.168.64.24:9093
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
+          envFrom:
+            - configMapRef:
+                name: kafka-env
           ports:
             - containerPort: 9092
               name: internal
-            - containerPort: 9093
-              name: external
-              hostPort: 9093
+            - containerPort: 32400
+              name: outside

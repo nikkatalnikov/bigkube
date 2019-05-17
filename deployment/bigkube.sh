@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function wait() {
-    while [[ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v "Running\|Succeeded\|Completed" | wc -l) != 0 ]]; do
+    while [ $(kubectl get pods | awk '{print $3}' | tail -n +2 | grep -v "Running\|Succeeded\|Completed" | wc -l) != 0 ]; do
         sleep 1
     done
 }
@@ -43,6 +43,9 @@ function create() {
     kubectl create -f mssql.yaml && wait
     kubectl create -f mssql-init-command.yaml && wait
     kubectl logs -f mssql-init-command
+    kubectl delete -f mssql-init-command.yaml
+    sed 's/$MINIKUBE_IP/'$(minikube ip)'/g' kafka.env > kafka.out.env
+    kubectl create configmap kafka-env --from-env-file kafka.out.env
     kubectl create -f kafka.yaml && wait
     kubectl create -f schema-registry.yaml && wait
     kubectl create configmap hive-env --from-env-file hive.env --dry-run -o yaml | kubectl apply -f -
